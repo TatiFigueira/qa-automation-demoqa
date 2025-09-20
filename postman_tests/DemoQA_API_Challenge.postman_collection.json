@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "ec5ca2fe-426e-4c0d-a9e2-77de2adf0e79",
+		"name": "Accenture - DemoQA API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39581141"
+	},
+	"item": [
+		{
+			"name": "Criar Usuário",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", \"pandora_\" + Math.floor(Math.random() * 10000));\r",
+							"pm.environment.set(\"password\", \"SenhaForte123@\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.environment.set(\"userID\", jsonData.userID);\r",
+							"\r",
+							"pm.test(\"Usuário criado com sucesso\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demoqa.com/Account/v1/User",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"Account",
+						"v1",
+						"User"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gerar Token de acesso",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.environment.set(\"token\", jsonData.token);\r",
+							"\r",
+							"pm.test(\"Token gerado com sucesso\", function () {\r",
+							"    pm.expect(jsonData.token).to.not.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demoqa.com/Account/v1/GenerateToken",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"Account",
+						"v1",
+						"GenerateToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirmar se usuário está autorizado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Usuário autorizado\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demoqa.com/Account/v1/Authorized",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"Account",
+						"v1",
+						"Authorized"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar livros disponíveis",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://demoqa.com/BookStore/v1/Books",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"BookStore",
+						"v1",
+						"Books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alugar dois livros",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"{{userID}}\",\r\n  \"collectionOfIsbns\": [\r\n    { \"isbn\": \"{{isbn1}}\" },\r\n    { \"isbn\": \"{{isbn2}}\" }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demoqa.com/BookStore/v1/Books",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"BookStore",
+						"v1",
+						"Books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar os detalhes do usuário",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRhdGlhbmEgRmlndWVpcmEiLCJwYXNzd29yZCI6IlNlbmhhZG9kb1FBNDQ2OUAiLCJpYXQiOjE3NTgyMTk4NjR9.oasBHV1HVxOi_8cDHP7Q-DozZs4Tef5Ea6OIzc3hhF8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demoqa.com/Account/v1/User/72fc0e43-c615-437b-858f-5bce28c31f5c",
+					"protocol": "https",
+					"host": [
+						"demoqa",
+						"com"
+					],
+					"path": [
+						"Account",
+						"v1",
+						"User",
+						"72fc0e43-c615-437b-858f-5bce28c31f5c"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

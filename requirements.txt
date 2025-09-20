@@ -1,0 +1,40 @@
+# Core testing frameworks
+selenium==4.15.2
+pytest==7.4.3
+pytest-html==4.1.1
+pytest-xdist==3.3.1
+
+# WebDriver management
+webdriver-manager==4.0.1
+
+# BDD framework
+behave==1.2.6
+
+# Reporting
+allure-pytest==2.13.2
+allure-behave==2.13.2
+
+# Data generation
+faker==20.1.0
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Performance testing
+locust==2.17.0
+
+# Accessibility testing
+axe-selenium-python==2.1.6
+
+# Development tools
+pytest-cov==4.1.0
+black==23.11.0
+flake8==6.1.0
+
+# Additional dependencies for adapted tests
+pytest-bdd==6.1.1
+pytest-mock==3.12.0

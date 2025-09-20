@@ -1,0 +1,13 @@
+{
+  "environment": "production",
+  "base_url": "https://demoqa.com",
+  "timeout": 20,
+  "browser": "chrome",
+  "headless": true,
+  "screenshot_on_failure": true,
+  "parallel_workers": 8,
+  "retry_count": 3,
+  "log_level": "WARNING",
+  "api_base_url": "https://demoqa.com/api",
+  "api_timeout": 45
+}

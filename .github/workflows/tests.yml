@@ -1,0 +1,130 @@
+name: QA Automation Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # Run daily at 2 AM
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+        browser: [chrome, firefox]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Create reports directory
+      run: |
+        mkdir -p reports/allure-results
+        mkdir -p reports/html-reports
+        mkdir -p reports/screenshots
+    
+    - name: Run smoke tests
+      run: |
+        pytest -m smoke --browser=${{ matrix.browser }} --headless=true --html=reports/html-reports/report-${{ matrix.browser }}.html --self-contained-html --allure-results-dir=reports/allure-results
+      env:
+        BROWSER: ${{ matrix.browser }}
+        HEADLESS: true
+        BASE_URL: https://demoqa.com
+    
+    - name: Run regression tests
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        pytest -m regression --browser=${{ matrix.browser }} --headless=true --html=reports/html-reports/regression-${{ matrix.browser }}.html --self-contained-html --allure-results-dir=reports/allure-results
+      env:
+        BROWSER: ${{ matrix.browser }}
+        HEADLESS: true
+        BASE_URL: https://demoqa.com
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results-${{ matrix.python-version }}-${{ matrix.browser }}
+        path: |
+          reports/
+          *.log
+    
+    - name: Upload Allure results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: allure-results-${{ matrix.python-version }}-${{ matrix.browser }}
+        path: reports/allure-results/
+    
+    - name: Generate Allure Report
+      if: always()
+      uses: simple-elf/allure-report-action@master
+      with:
+        allure_results: reports/allure-results
+        allure_report: allure-report
+        gh_pages: gh-pages
+        allure_history: allure-history
+
+  performance:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run performance tests
+      run: |
+        pytest -m performance --browser=chrome --headless=true --html=reports/html-reports/performance.html --self-contained-html
+      env:
+        BROWSER: chrome
+        HEADLESS: true
+        BASE_URL: https://demoqa.com
+    
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: performance-results
+        path: reports/

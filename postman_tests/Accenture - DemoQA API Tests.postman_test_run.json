@@ -1,0 +1,181 @@
+{
+	"id": "abfd0268-43f8-4537-86ee-3cdb2a6de53c",
+	"name": "Accenture - DemoQA API Tests",
+	"timestamp": "2025-09-19T06:08:37.921Z",
+	"collection_id": "39581141-ec5ca2fe-426e-4c0d-a9e2-77de2adf0e79",
+	"folder_id": 0,
+	"environment_id": "39581141-5befc6fc-98da-4a27-8e6b-376f7905e2ba",
+	"totalPass": 3,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-09-19T06:08:33.240Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "29d2015a-3468-4d87-89f3-095bf986733d",
+			"name": "Criar Usuário",
+			"url": "https://demoqa.com/Account/v1/User",
+			"time": 1469,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Usuário criado com sucesso": true
+			},
+			"testPassFailCounts": {
+				"Usuário criado com sucesso": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1469
+			],
+			"allTests": [
+				{
+					"Usuário criado com sucesso": true
+				}
+			]
+		},
+		{
+			"id": "4b990807-cedb-4463-999e-b5a0f0672658",
+			"name": "Gerar Token de acesso",
+			"url": "https://demoqa.com/Account/v1/GenerateToken",
+			"time": 737,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Token gerado com sucesso": true
+			},
+			"testPassFailCounts": {
+				"Token gerado com sucesso": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				737
+			],
+			"allTests": [
+				{
+					"Token gerado com sucesso": true
+				}
+			]
+		},
+		{
+			"id": "5d48b76d-112c-4273-a96a-bc8b1137a09b",
+			"name": "Confirmar se usuário está autorizado",
+			"url": "https://demoqa.com/Account/v1/Authorized",
+			"time": 551,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Usuário autorizado": true
+			},
+			"testPassFailCounts": {
+				"Usuário autorizado": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				551
+			],
+			"allTests": [
+				{
+					"Usuário autorizado": true
+				}
+			]
+		},
+		{
+			"id": "9a8371a2-3929-4b42-9351-4dcc9a6a44a4",
+			"name": "Listar livros disponíveis",
+			"url": "https://demoqa.com/BookStore/v1/Books",
+			"time": 206,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				206
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "5dc3c97f-a15e-40e8-8899-0c79ef24ca8d",
+			"name": "Alugar dois livros",
+			"url": "https://demoqa.com/BookStore/v1/Books",
+			"time": 372,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				372
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "557007e6-fc01-46f8-ad68-12c59863d867",
+			"name": "Listar os detalhes do usuário",
+			"url": "https://demoqa.com/Account/v1/User/72fc0e43-c615-437b-858f-5bce28c31f5c",
+			"time": 273,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				273
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 3608,
+	"collection": {
+		"requests": [
+			{
+				"id": "29d2015a-3468-4d87-89f3-095bf986733d",
+				"method": "POST"
+			},
+			{
+				"id": "4b990807-cedb-4463-999e-b5a0f0672658",
+				"method": "POST"
+			},
+			{
+				"id": "5d48b76d-112c-4273-a96a-bc8b1137a09b",
+				"method": "POST"
+			},
+			{
+				"id": "9a8371a2-3929-4b42-9351-4dcc9a6a44a4",
+				"method": "GET"
+			},
+			{
+				"id": "5dc3c97f-a15e-40e8-8899-0c79ef24ca8d",
+				"method": "POST"
+			},
+			{
+				"id": "557007e6-fc01-46f8-ad68-12c59863d867",
+				"method": "GET"
+			}
+		]
+	}
+}
